@@ -1,17 +1,25 @@
-import { Injectable } from '@nestjs/common'
-import { PrismaService } from '../prisma/prisma.service'
+import { Test, TestingModule } from '@nestjs/testing';
+import { UsersService } from './users.service';
+import { PrismaService } from '../prisma/prisma.service';
 
-@Injectable()
-export class UsersService {
-  constructor(private prisma: PrismaService) {}
+describe('UsersService', () => {
+  let service: UsersService;
 
-  async create(data: any) {
-    return this.prisma.user.create({
-      data,
-    })
-  }
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        UsersService,
+        {
+          provide: PrismaService,
+          useValue: {}, // Mock PrismaService
+        },
+      ],
+    }).compile();
 
-  async findAll() {
-    return this.prisma.user.findMany()
-  }
-}
+    service = module.get<UsersService>(UsersService);
+  });
+
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+});
