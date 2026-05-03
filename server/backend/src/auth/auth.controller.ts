@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards, Request } from '@nestjs/common'
+import { Body, Controller, Get, Post, UseGuards, Req } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { UsersService } from '../users/users.service'
@@ -21,5 +21,11 @@ login(@Body() body: any) {
 @UseGuards(JwtAuthGuard)
 findAll() {
   return this.usersService.findAll()
+}
+
+@Get('me')
+@UseGuards(JwtAuthGuard)
+getMe(@Req() req: any) {
+  return req.user
 }
 }
